@@ -9,7 +9,7 @@
  */
 
 /**
- * Stop executing for some time.
+ * Wait for a process to finish
  */
 class Wait : public POSIXApplication
 {
