@@ -77,10 +77,14 @@ Process::Priority Process::getPriority() {
     return m_priority;
 }
 
-void Process::setPriority(int priority) {
-    if(priority <= 5 && priority >= 1) {
-        m_priority = (Priority) priority;
+Process::Result Process::setPriority(int priority) {
+    if(priority > 5 || priority < 1) {
+        ERROR("Invalid priority level: " << priority);
+        return InvalidArgument;
     }
+
+    m_priority = (Priority) priority;
+    return Success;
 }
 
 uint Process::getWaitResult() const

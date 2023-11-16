@@ -200,6 +200,18 @@ ProcessManager::Result ProcessManager::schedule()
     return Success;
 }
 
+ProcessManager::Result ProcessManager::changePriority(Process *proc, int priority) {
+    if(proc->getState() == Process::Ready) {
+        m_scheduler->dequeue(proc, true);
+        proc->setPriority(priority);
+        m_scheduler->enqueue(proc, false);
+    } else {
+        proc->setPriority(priority);
+    }
+
+    return Success;
+}
+
 Process * ProcessManager::current()
 {
     return m_current;
