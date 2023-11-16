@@ -71,6 +71,12 @@ class Process
         Stopped
     };
 
+    enum Priority{
+      Min=1, 
+      Default=3,
+      Max=5
+    };
+
   public:
 
     /**
@@ -107,7 +113,12 @@ class Process
      * 
      * @return process priority
      */
-    int getPriority() const;
+    Priority getPriority();
+
+    /**
+     * Set process priority level
+     */
+    void setPriority(int priority);
 
     /**
      * Get Wait ID.
@@ -257,7 +268,7 @@ class Process
     ProcessID m_parent;
     
     /** Process priority */
-    int m_priority;
+    Priority m_priority;
 
     /** Current process status. */
     State m_state;

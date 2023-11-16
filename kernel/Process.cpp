@@ -28,7 +28,7 @@ Process::Process(ProcessID id, Address entry, bool privileged, const MemoryMap &
 {
     m_state         = Stopped;
     m_parent        = 0;
-    m_priority	    = 3; 
+    m_priority	    = Default; 
     m_waitId        = 0;
     m_waitResult    = 0;
     m_wakeups       = 0;
@@ -68,14 +68,19 @@ ProcessID Process::getParent() const
     return m_parent;
 }
 
-int Process::getPriority() const
-{
-    return m_priority;
-}
-
 ProcessID Process::getWait() const
 {
     return m_waitId;
+}
+
+Process::Priority Process::getPriority() {
+    return m_priority;
+}
+
+void Process::setPriority(int priority) {
+    if(priority <= 5 && priority >= 1) {
+        m_priority = (Priority) priority;
+    }
 }
 
 uint Process::getWaitResult() const
