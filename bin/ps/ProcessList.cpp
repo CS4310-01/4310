@@ -26,6 +26,7 @@ ProcessList::ProcessList(int argc, char **argv)
     : POSIXApplication(argc, argv)
 {
     parser().setDescription("Output system process list");
+    // marks the usage of -l flag for later reference
     parser().registerFlag('l', "priority", "display additional information for priority");
 }
 
@@ -34,10 +35,12 @@ ProcessList::Result ProcessList::exec()
     const ProcessClient process;
     String out;
     
+    // if flag is used, print header with additional priority column
     if(arguments().get("priority")) 
     {
         out << "ID  PARENT  PRIORITY  USER GROUP STATUS     CMD\r\n";
     } 
+    // if flag is not used, execute command as default
     else 
     {
         // Print header
@@ -54,6 +57,7 @@ ProcessList::Result ProcessList::exec()
         {
             DEBUG("PID " << pid << " state = " << *info.textState);
 
+            // if flag is used, print adds priority info to output
             if(arguments().get("priority")) 
             {
                 char line[128];
@@ -63,6 +67,7 @@ ProcessList::Result ProcessList::exec()
                         0, 0, *info.textState, *info.command);
                 out << line;
             } 
+            // if flag is not used, execute command as default w/o priority info
             else 
             {
                 // Output a line
