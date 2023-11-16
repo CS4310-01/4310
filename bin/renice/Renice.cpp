@@ -37,7 +37,7 @@ Renice::Result Renice::exec()
         }
 
         //check if new priority is valid
-        if(priority < 1 || > 5) {
+        if(priority < 1 || priority > 5) {
             ERROR("ERROR: Requested priority level is not valid! Priority must be a level from 1-5!" << pid)
             return InvalidArgument;
         }
