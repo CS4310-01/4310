@@ -16,6 +16,9 @@ Renice::Renice(int argc, char **argv)
     parser().registerFlag('n', "priority", "change priority level");
 }
 
+Renice::~Renice(){
+}
+
 Renice::Result Renice::exec()
 {
     if(arguments().get("priority")) {
@@ -39,7 +42,7 @@ Renice::Result Renice::exec()
         }
         
         // final error checking
-        if (renicepid(pid, priority, 0 , 0) == ProcessCtl::Success){
+        if (renicepid(pid, priority, 0 , 0) == API::Success){
             printf("Process with ID %d has been changed from priority level %d to priority level %d\n", pid, info.kernelState.priority, priority);
         }
 
