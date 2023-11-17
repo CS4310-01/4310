@@ -113,7 +113,7 @@ class Process
      * 
      * @return process priority
      */
-    Priority getPriority();
+    int getPriority();
 
     /**
      * Set process priority level

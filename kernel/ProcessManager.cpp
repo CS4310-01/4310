@@ -200,26 +200,27 @@ ProcessManager::Result ProcessManager::schedule()
     return Success;
 }
 
-ProcessManager::Result ProcessManager::changePriority(Process *proc, int priority)
+ProcessManager::Result ProcessManager::setPriority(const ProcessID id, const int priority)
 {
-    if(proc->getState() == Process::Ready) {
-        if(m_scheduler->dequeue(proc, true) != Scheduler::Success) {
-            FATAL("failed to dequeue PID " << proc->getID());
-        }
-
-        if(proc->setPriority(priority) != Process::Success) {
-            FATAL("failed to set priority of PID " << proc->getID());
-        }
-
-        if(m_scheduler->enqueue(proc, false) != Scheduler::Success) {
-            FATAL("failed to enqueue PID " << proc->getID());
-        }
-    } else {
-        if(proc->setPriority(priority) != Process::Success) {
-            FATAL("failed to set priority of PID " << proc->getID());
-        }
+    // Check if the process exists
+    Process* proc = get(id);
+    if (proc == ZERO)
+    {	
+        return InvalidArgument;
     }
+    
+    // Dequeue the process to set the priority and enqueue it back with updated priority
+    dequeueProcess(proc, true);
+    Process::Result result = proc->setPriority(priority);
+    enqueueProcess(proc, false);
 
+    // Check the result of updating the priority
+    if (result != Success)
+    {
+        return InvalidArgument;
+    }
+    
+    schedule();
     return Success;
 }
 

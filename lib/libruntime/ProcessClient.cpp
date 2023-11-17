@@ -34,7 +34,10 @@ ProcessID ProcessClient::getParentID() const
     return m_parent;
 }
 
-
+void ProcessClient::setPriority(const ProcessID pid, int priority)
+{
+    ProcessCtl(pid, SetPriority, priority);
+}
 
 ProcessClient::Result ProcessClient::processInfo(const ProcessID pid,
                                                  ProcessClient::Info &info) const

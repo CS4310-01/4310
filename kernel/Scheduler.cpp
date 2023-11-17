@@ -26,12 +26,11 @@ Scheduler::Scheduler()
 
 Size Scheduler::count() const
 {
-    Size count = 0;
-
-    for(int i = 0; i < 5; i++) {
+    int count = 0;
+    for (int i = 0; i < 5; ++i)
+    {
         count += m_queue[i].count();
     }
-
     return count;
 }
 
@@ -43,7 +42,9 @@ Scheduler::Result Scheduler::enqueue(Process *proc, bool ignoreState)
         return InvalidArgument;
     }
 
-    (*queueOf(proc)).push(proc);
+    int priority = proc->getPriority();
+    m_queue[priority - 1].push(proc);
+
     return Success;
 }
 
@@ -54,18 +55,19 @@ Scheduler::Result Scheduler::dequeue(Process *proc, bool ignoreState)
         ERROR("process ID " << proc->getID() << " is in Ready state");
         return InvalidArgument;
     }
-
-    Size count = (*queueOf(proc)).count();
+    
+    int priority = proc->getPriority();
+    Size count = m_queue[priority - 1].count();
 
     // Traverse the Queue to remove the Process
     for (Size i = 0; i < count; i++)
     {
-        Process *p = (*queueOf(proc)).pop();
+        Process *p = m_queue[priority - 1].pop();
 
-        if (p == proc)
-            return Success;
+        if (p == proc)       
+            return Success;     
         else
-            (*queueOf(proc)).push(p);
+            m_queue[priority - 1].push(p);
     }
 
     FATAL("process ID " << proc->getID() << " is not in the schedule");
@@ -74,8 +76,10 @@ Scheduler::Result Scheduler::dequeue(Process *proc, bool ignoreState)
 
 Process * Scheduler::select()
 {
-    for(int i = 4; i >= 0; i--) {
-        if (m_queue[i].count() > 0) {
+    for(int i = 4; i >= 0; i--) 
+    {
+        if (m_queue[i].count() > 0) 
+        {
             Process *p = m_queue[i].pop();
             m_queue[i].push(p);
 

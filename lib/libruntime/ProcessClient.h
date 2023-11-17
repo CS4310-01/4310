@@ -85,6 +85,7 @@ class ProcessClient
      */
     ProcessID getParentID() const;
 
+    void setPriority(const ProcessID pid, int priority);
 
     /**
      * Get process information by its ID.
