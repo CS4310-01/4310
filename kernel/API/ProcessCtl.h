@@ -36,18 +36,19 @@
  */
 typedef enum ProcessOperation
 {
+    
     Spawn = 0,
+    SetPriority = -1,
+    GetPriority,
     KillPID,
     GetPID,
     GetParent,
-    GetPriority,
     WatchIRQ,
     EnableIRQ,
     DisableIRQ,
     SendIRQ,
     InfoPID,
     WaitPID,
-    RenicePID,
     InfoTimer,
     WaitTimer,
     EnterSleep,
@@ -55,7 +56,8 @@ typedef enum ProcessOperation
     Wakeup,
     Stop,
     Resume,
-    Reset
+    Reset,
+
 }
 ProcessOperation;
 
@@ -64,6 +66,9 @@ ProcessOperation;
  */
 typedef struct ProcessInfo
 {
+    /** Process priority number. */
+    int priority;
+
     /** Process Identity number. Must be unique. */
     ProcessID id;
 
@@ -72,9 +77,6 @@ typedef struct ProcessInfo
 
     /** Defines the current state of the Process. */
     Process::State state;
-
-    /** Process priority. */
-    Process::Priority priority;
 }
 ProcessInfo;
 
@@ -144,3 +146,4 @@ extern API::Result ProcessCtlHandler(const ProcessID proc,
  */
 
 #endif /* __KERNEL_API_PROCESSCTL_H */
+

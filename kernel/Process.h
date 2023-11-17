@@ -71,12 +71,6 @@ class Process
         Stopped
     };
 
-    enum Priority{
-      Min=1, 
-      Default=3,
-      Max=5
-    };
-
   public:
 
     /**
@@ -113,7 +107,7 @@ class Process
      * 
      * @return process priority
      */
-    Priority getPriority();
+    int getPriority();
 
     /**
      * Set process priority level
@@ -268,7 +262,7 @@ class Process
     ProcessID m_parent;
     
     /** Process priority */
-    Priority m_priority;
+    int m_priority;
 
     /** Current process status. */
     State m_state;
